@@ -13,11 +13,33 @@
 
 ;como representar um jogador
 
+; vai calcular os pontos de acordo com as cartas
+;1º REGRA  - J , Q , K = 10 (NÃO 11, 12 E 13)
+;2º REGRA  - [A 10] = 11 OU 21 = 21
+;3º REGRA - [A 5 7] = 1+5+7(13) OU 11+5+7 (23)
+
+
+
+;REGRA 1
+(defn JQK>10 [card]
+  (if (> card 10) 10 card))
+
+
+;SOMA DOS PONTOS
+(defn points-cards [cards]
+  (let [cards-without-JQK (map JQK>10 cards)]
+    (reduce + cards-without-JQK)))
+
+
+
 (defn player [player-name]
   (let [card1 (new-card)
-        card2 (new-card)]
+        card2 (new-card)
+        cards [card1 card2]
+        points (points-cards cards)]
     {:player-name player-name
-     :cards [card1 card2]}))
+     :cards cards
+     :points points}))
 
 
 (card/print-player (player "Caio"))
