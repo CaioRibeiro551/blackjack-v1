@@ -42,12 +42,24 @@
 (defn player [player-name]
   (let [card1 (new-card)
         card2 (new-card)
-        cards [card1 card2]
+        card3 (new-card)
+        cards [card1 card2 card3]
         points (points-cards cards)]
     {:player-name player-name
      :cards cards
      :points points}))
 
-(let [nomes-jogadores (receber-nomes-jogadores)]
-  (doseq [nome nomes-jogadores]
-    (card/print-player (player nome))))
+(defn encontrar-vencedor [players]
+  (let [vencedores (filter #(<= (:points %) 21) players)
+        max-points (apply max (map :points vencedores))
+        vencedores (filter #(= (:points %) max-points) vencedores)]
+    (cond
+      (empty? vencedores) (println "Nenhum jogador fez 21 pontos ou menos.")
+      (> (count vencedores) 1) (println "Jogue novamente")
+      :else (do (println (str "O jogador que venceu a rodada foi: " (:player-name (first vencedores))))))))
+
+(let [nomes-jogadores (receber-nomes-jogadores)
+      players (map player nomes-jogadores)]
+  (doseq [player players]
+    (card/print-player player))
+  (encontrar-vencedor players))
