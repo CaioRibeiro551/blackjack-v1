@@ -82,7 +82,7 @@
                              players)]
             players))))))
 
-(defn play-game []
+(defn play-game [main-menu]
   (loop []
     (let [players (play-round)]
       (println "Deseja jogar novamente? (sim/não)")
@@ -90,9 +90,11 @@
         (if (= resposta "não")
           (do
             (println "Obrigado por jogar!")
-            (System/exit 0))
-          (main-menu))))))
-
+            ;; Retornar um valor especial de saída para indicar que o jogo deve encerrar
+            :exit)
+          (do
+            (println "Voltando ao menu principal...")
+            (main-menu)))))))
 
 (defn main-menu []
   (println "Bem-vindo ao jogo!")
@@ -101,7 +103,7 @@
   (println "2. Sair")
   (let [option (read-line)]
     (case option
-      "1" (play-game)
+      "1" (play-game main-menu)
       "2" (println "Até mais!")
       (do
         (println "Opção inválida. Por favor, escolha novamente.")
