@@ -5,8 +5,7 @@
   (println "Quantos jogadores irão participar? (máximo de 12)")
   (let [entrada (read-line)
         num-jogadores (if (re-matches #"\d+" entrada)
-                        (Integer/parseInt entrada)
-                        nil)]
+                        (Integer/parseInt entrada) nil)]
     (if (and num-jogadores (<= num-jogadores 12))
       (loop [jogadores [] contador 1]
         (if (<= contador num-jogadores)
@@ -51,7 +50,7 @@
     {:player-name player-name
      :cards cards
      :points points
-     :wins 0})) ; Adicionando a contagem de vitórias seguidas ao jogador
+     :wins 0}))
 
 (defn found-winner [players]
   (let [vencedores (filter #(<= (:points %) 21) players)]
@@ -90,7 +89,7 @@
         (if (= resposta "não")
           (do
             (println "Obrigado por jogar!")
-            ;; Retornar um valor especial de saída para indicar que o jogo deve encerrar
+
             :exit)
           (do
             (println "Voltando ao menu principal...")
